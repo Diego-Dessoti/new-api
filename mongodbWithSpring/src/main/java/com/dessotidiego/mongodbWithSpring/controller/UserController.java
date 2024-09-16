@@ -1,5 +1,6 @@
 package com.dessotidiego.mongodbWithSpring.controller;
 
+import com.dessotidiego.mongodbWithSpring.domain.Post;
 import com.dessotidiego.mongodbWithSpring.domain.User;
 import com.dessotidiego.mongodbWithSpring.dto.UserDTO;
 import com.dessotidiego.mongodbWithSpring.services.UserService;
@@ -58,5 +59,11 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{id}/posts")
+    public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+        User user = service.findById(id);
+
+        return ResponseEntity.ok().body(user.getPosts());
+    }
 
 }
