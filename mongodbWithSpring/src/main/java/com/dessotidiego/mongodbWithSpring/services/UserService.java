@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -25,7 +26,7 @@ public class UserService {
         try {
             Optional<User> optionalUser = repository.findById(id);
             return optionalUser.get();
-        } catch (Exception e) {
+        } catch (NoSuchElementException e) {
             throw new ObjectNotFoundException("Object not found");
         }
 
@@ -37,6 +38,26 @@ public class UserService {
 
     public User fromDTO(UserDTO dto) {
         return new User(dto.getId(), dto.getName(), dto.getEmail());
+    }
+
+    public void delete(String id){
+        findById(id);
+        repository.deleteById( id);
+    }
+
+    public User update(User obj){
+        try{
+        User newObj = repository.findById(obj.getId()).get();
+        updateData(newObj, obj);
+        return repository.save(newObj);
+        }catch (NoSuchElementException e){
+            throw new ObjectNotFoundException("Object not found");
+        }
+    }
+
+    public void updateData(User newObj, User obj){
+        newObj.setName(obj.getName());
+        newObj.setEmail(obj.getEmail());
     }
 
 }
