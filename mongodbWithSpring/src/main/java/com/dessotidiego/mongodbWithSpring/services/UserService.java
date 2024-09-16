@@ -1,5 +1,6 @@
 package com.dessotidiego.mongodbWithSpring.services;
 
+import com.dessotidiego.mongodbWithSpring.dto.UserDTO;
 import com.dessotidiego.mongodbWithSpring.repository.UserRepository;
 import com.dessotidiego.mongodbWithSpring.domain.User;
 import com.dessotidiego.mongodbWithSpring.services.exception.ObjectNotFoundException;
@@ -30,5 +31,12 @@ public class UserService {
 
     }
 
+    public User insert(User user) {
+        return repository.insert(user);
+    }
+
+    public User fromDTO(UserDTO dto) {
+        return new User(dto.getId(), dto.getName(), dto.getEmail());
+    }
 
 }
